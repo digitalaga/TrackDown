@@ -1,0 +1,58 @@
+name: Generate package.json and package-lock.json
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  generate-package-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Generate package.json if it does not exist
+    - name: Generate package.json
+      run: |
+        if [ ! -f "package.json" ]; then
+          echo '{
+            "name": "link-generator",
+            "version": "1.0.0",
+            "description": "A link generator project",
+            "main": "index.js",
+            "scripts": {
+              "start": "node index.js"
+            },
+            "author": "",
+            "license": "MIT"
+          }' > package.json
+        fi
+
+    # Install dependencies and generate package-lock.json
+    - name: Install dependencies and generate lockfile
+      run: |
+        npm install
+        if [ -f "package-lock.json" ]; then
+          echo "package-lock.json generated successfully."
+        else
+          echo "Failed to generate package-lock.json."
+        fi
+
+    # Commit changes (package.json and package-lock.json)
+    - name: Commit package files
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add package.json package-lock.json
+        git commit -m "Add package.json and package-lock.json"
+      continue-on-error: true
+
+    # Push changes back to the repository
+    - name: Push changes
+      run: |
+        git push origin main
+      continue-on-error: true
